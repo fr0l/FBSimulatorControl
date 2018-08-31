@@ -206,11 +206,6 @@ static NSString *const SimulatorBridgePortSuffix = @"FBSimulatorControl";
     onQueue:self.workQueue fmap:^(SimulatorBridge *bridge) {
       // Set the Bridge to a good state.
       [bridge enableAccessibility];
-      if (![bridge accessibilityEnabled]) {
-        return [[FBSimulatorError
-          describeFormat:@"Could not enable accessibility for bridge '%@'", bridge]
-          failFuture];
-      }
       return [FBFuture futureWithResult:NSNull.null];
     }];
 }
