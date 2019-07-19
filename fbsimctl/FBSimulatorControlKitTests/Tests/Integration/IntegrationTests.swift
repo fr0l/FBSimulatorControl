@@ -17,10 +17,10 @@ class IntegrationTests: XCTestCase {
     let set1 = URL.urlRelativeTo(NSTemporaryDirectory(), component: "FBSimulatorControlKitTests/set_1", isDirectory: true)
     let set2 = URL.urlRelativeTo(NSTemporaryDirectory(), component: "FBSimulatorControlKitTests/set_2", isDirectory: true)
 
-    if (try? FileManager.default.createDirectory(at: set1, withIntermediateDirectories: true, attributes: [:])) == nil {
+    if (try? FileManager.default.createDirectory(at: set1, withIntermediateDirectories: true, attributes: convertToOptionalFileAttributeKeyDictionary([:]))) == nil {
       XCTFail("Could not create directory at \(set1)")
     }
-    if (try? FileManager.default.createDirectory(at: set2, withIntermediateDirectories: true, attributes: [:])) == nil {
+    if (try? FileManager.default.createDirectory(at: set2, withIntermediateDirectories: true, attributes: convertToOptionalFileAttributeKeyDictionary([:]))) == nil {
       XCTFail("Could not create directory at \(set2)")
     }
 
@@ -52,4 +52,10 @@ class IntegrationTests: XCTestCase {
     let arguments = ["--set", simulatorSet.path, "--simulators"] + command
     return assertCLIRunsSuccessfully(arguments)
   }
+}
+
+// Helper function inserted by Swift 4.2 migrator.
+fileprivate func convertToOptionalFileAttributeKeyDictionary(_ input: [String: Any]?) -> [FileAttributeKey: Any]? {
+	guard let input = input else { return nil }
+	return Dictionary(uniqueKeysWithValues: input.map { key, value in (FileAttributeKey(rawValue: key), value)})
 }
